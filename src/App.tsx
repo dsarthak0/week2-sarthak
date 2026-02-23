@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
  
 // Data
-import { stocks, trades } from './data/stockData';
+import { stocks, trades } from './data/stockdata';
  
 // Types
 import type  { Stock, Trade }   from './types/stock.types';
@@ -20,13 +20,12 @@ function App() {
   const [tradeHistory,  setTradeHistory]  = useState<Trade[]>(trades);
  
   // Filter stocks based on search and sector
-  const filteredStocks = stocks.filter(s => {
-    const matchesSearch = s.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-      || s.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesSector = !sectorFilter || s.sector === sectorFilter;
-    return matchesSearch && matchesSector;
-  });
- 
+  const filteredStocks = stocks.filter((s: Stock) => {
+  const matchesSearch = s.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+    || s.name.toLowerCase().includes(searchQuery.toLowerCase());
+  const matchesSector = !sectorFilter || s.sector === sectorFilter;
+  return matchesSearch && matchesSector;
+});
   // Add a new trade (receives NewTradeInput — no id/date)
   const handleNewTrade = (input: Omit<Trade, 'id' | 'date'>) => {
     const newTrade: Trade = {
@@ -50,13 +49,12 @@ function App() {
  
       {/* Typing Props */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-        {filteredStocks.map(stock => (
-          <StockCard
-            key={stock.id}
-            stock={stock}
-            isSelected={selectedStock?.id === stock.id}
-            onSelect={setSelectedStock}
-          />
+        {filteredStocks.map((stock: Stock) => (
+    <StockCard
+      key={stock.id}
+      stock={stock}
+      isSelected={selectedStock?.id === stock.id}
+      onSelect={setSelectedStock}/>
         ))}
       </div>
  

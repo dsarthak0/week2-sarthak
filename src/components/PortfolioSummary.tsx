@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { Stock } from '../types/stock.types';
 
 interface PortfolioState {
@@ -24,7 +24,7 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ availableStocks }) 
     });
 
     const [selectedSector, setSelectedSector] = useState<string>('All');
-    const [sortBy, setSortBy] = useState<'price' | 'change' | 'volume'>('price');
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
