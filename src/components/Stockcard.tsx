@@ -22,7 +22,7 @@ const StockCard: React.FC<StockCardProps> = ({
                 borderRadius: 8,
                 padding: 16,
                 cursor: 'pointer',
-                background: isSelected ? '#DBEAFE' : '#fff',
+                background: isSelected ? '#0a0b0d' : '#090505',
                 marginBottom: '8px',
                 transition: 'all 0.2s ease' // Added a slight transition for better feel
             }}
