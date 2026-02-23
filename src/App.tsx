@@ -12,6 +12,7 @@ import PortfolioSummary   from './components/PortfolioSummary';
 import SearchBar          from './components/SearchBar';
 import DataTable          from './components/Datatable';
 import TradeForm          from './components/Tradeform';
+import PositionsPage from './components/PositionsPage';
  
 function App() {
   const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
@@ -109,6 +110,7 @@ function App() {
         onSubmitTrade={handleNewTrade}
         initialValues={selectedStock ?? {}}
       />
+      <PositionsPage/>
     </div>
   );
 }
