@@ -34,6 +34,8 @@ const HoldingsPage = () => {
                 </span>
             )
         },
+        
+  
         { 
             key: 'returnPercentage', 
             header: 'Return %',
@@ -42,7 +44,7 @@ const HoldingsPage = () => {
                     color: val >= 0 ? '#10B981' : '#EF4444',
                     padding: '4px 8px',
                     borderRadius: '4px',
-                    backgroundColor: val >= 0 ? '#ECFDF5' : '#FEF2F2'
+                    backgroundColor: val >= 0 ? '#a9b0ad' : '#FEF2F2'
                 }}>
                     {val > 0 ? `+${val}%` : `${val}%`}
                 </span>
@@ -59,7 +61,7 @@ const HoldingsPage = () => {
                 </div>
             </div>
             
-            <div style={{ backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+            <div style={{ backgroundColor: '#0b0707', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
                 <DataTable<HoldingsDisplay> 
                     data={displayData} 
                     columns={columns} 
@@ -71,4 +73,4 @@ const HoldingsPage = () => {
     );
 };
 
-export default HoldingsPage;
+export default HoldingsPage; 
