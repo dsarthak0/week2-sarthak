@@ -1,45 +1,50 @@
 
-import DataTable from './Datatable'; // Adjust path
-import type { Column } from './Datatable' // If exported, or define locally
-import type { PositionDisplay } from '../types/stock.types';
-import { MockPositions, getProcessedPositions } from '../data/sampleData';
+import DataTable from './Datatable'; 
+import type { Column } from './Datatable';
+import type { HoldingsDisplay } from '../types/stock.types';
+import { sampleHoldings, getProcessedHoldings } from '../data/sampleData';
 
-const PositionsPage = () => {
-    // 1. Process the raw mock data to get P&L calculations
-    const displayData: PositionDisplay[] = getProcessedPositions(MockPositions);
+const HoldingsPage = () => {
 
-    // 2. Define the columns specifically for the PositionDisplay type
-    const columns: Column<PositionDisplay>[] = [
+    const displayData: HoldingsDisplay[] = getProcessedHoldings(sampleHoldings);
+
+  
+    const columns: Column<HoldingsDisplay>[] = [
         { key: 'symbol', header: 'Symbol', width: 100 },
-        { key: 'qty', header: 'Qty' },
+        { key: 'quantity', header: 'Qty' },
         { 
-            key: 'avgprice', 
-            header: 'Avg Price', 
-            render: (val: number) => `$${val.toFixed(2)}` 
+            key: 'investedvalue', 
+            header: 'Invested', 
+            render: (val: number) => `$${val.toLocaleString()}` 
         },
         { 
-            key: 'ltp', 
-            header: 'LTP', 
-            render: (val: number) => `$${val.toFixed(2)}` 
+            key: 'currentvalue', 
+            header: 'Current Value', 
+            render: (val: number) => `$${val.toLocaleString()}` 
         },
         { 
-            key: 'pnl', 
-            header: 'P&L',
+            key: 'totalreturn', 
+            header: 'Total Return',
             render: (val: number) => (
                 <span style={{ 
                     color: val >= 0 ? '#10B981' : '#EF4444', 
                     fontWeight: '600' 
                 }}>
-                    {val >= 0 ? `+${val.toFixed(2)}` : val.toFixed(2)}
+                    {val >= 0 ? `+$${val.toLocaleString()}` : `-$${Math.abs(val).toLocaleString()}`}
                 </span>
             )
         },
         { 
-            key: 'pnlPercent', 
-            header: 'P&L%',
+            key: 'returnPercentage', 
+            header: 'Return %',
             render: (val: number) => (
-                <span style={{ color: val >= 0 ? '#10B981' : '#EF4444' }}>
-                    {val}%
+                <span style={{ 
+                    color: val >= 0 ? '#10B981' : '#EF4444',
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    backgroundColor: val >= 0 ? '#ECFDF5' : '#FEF2F2'
+                }}>
+                    {val > 0 ? `+${val}%` : `${val}%`}
                 </span>
             )
         },
@@ -47,18 +52,23 @@ const PositionsPage = () => {
 
     return (
         <div style={{ padding: '24px' }}>
-            <h1 style={{ marginBottom: '16px' }}>My Positions</h1>
-            <div style={{ backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                {/* 3. Plug everything into your Generic DataTable */}
-                <DataTable<PositionDisplay> 
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h1>My Portfolio Holdings</h1>
+                <div style={{ fontSize: '14px', color: '#6B7280' }}>
+                    Total Assets: {displayData.length}
+                </div>
+            </div>
+            
+            <div style={{ backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+                <DataTable<HoldingsDisplay> 
                     data={displayData} 
                     columns={columns} 
                     rowKey="symbol" 
-                    onRowClick={(row) => console.log("Selected:", row.symbol)}
+                    onRowClick={(row) => console.log("Viewing Holding details for:", row.symbol)}
                 />
             </div>
         </div>
     );
 };
 
-export default PositionsPage;
+export default HoldingsPage;

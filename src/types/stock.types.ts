@@ -9,6 +9,13 @@ export interface Stock{
     marketCap:number;
     sector:string;
 }
+export interface Holdings{
+    symbol:string;
+    quantity:number;
+    investedvalue:number;
+    currentvalue:number;
+    totalreturn:number;
+}
 
 export interface Trade{
     id:string;
@@ -34,4 +41,8 @@ export interface Position{
 export interface PositionDisplay extends Position {
   pnl: number;
   pnlPercent: number;
+}
+export interface HoldingsDisplay extends Holdings {
+  returnPercentage: number;
+  currentPrice: number;
 }
