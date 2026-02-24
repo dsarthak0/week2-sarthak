@@ -46,10 +46,7 @@ export const sampleHoldings: Holdings[] = [
 ];
 
 
-/**
- * Processes raw holdings data to include performance metrics 
- * like percentage return and current share price.
- */
+
 export const getProcessedHoldings = (holdings: Holdings[]): HoldingsDisplay[] => {
   return holdings.map((hold) => {
     // Calculate percentage return: (Total Return / Invested Value) * 100

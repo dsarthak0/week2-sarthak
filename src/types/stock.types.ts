@@ -9,6 +9,15 @@ export interface Stock{
     marketCap:number;
     sector:string;
 }
+
+export interface PaginationResult{
+    totalItems:number;
+    currentPage:number;
+    totalPage:number;
+
+}
+
+
 export interface Holdings{
     symbol:string;
     quantity:number;
@@ -25,6 +34,7 @@ export interface Trade{
     quantity:number;
     price:number;
     date:string;
+   
 }
 export interface Portfolio{
     totalValue:number;

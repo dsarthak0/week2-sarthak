@@ -4,6 +4,7 @@
 export interface Column<T> {
     key: keyof T;
     header: string;
+    sortable?: boolean;
   
     render?: (value: any, row: T) => React.ReactNode; 
     width?: number;
@@ -15,6 +16,8 @@ interface DataTableProps<T extends object> {
     rowKey: keyof T;
     onRowClick?: (row: T) => void;
     emptyMessage?: string;
+    rowsPerPage?:number;
+    filterKey?: keyof T;
 }
 
 
@@ -24,7 +27,9 @@ function DataTable<T extends object>({
     rowKey,
     onRowClick,
     emptyMessage = "No Data Found",
+    
 }: DataTableProps<T>) {
+    
     
     if (data.length === 0) return <p>{emptyMessage}</p>;
 
