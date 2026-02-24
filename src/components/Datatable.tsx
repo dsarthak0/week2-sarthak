@@ -14,8 +14,8 @@ interface DataTableProps<T extends { symbol?: string }> {
   rowKey: keyof T;
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
-  rowsPerPage?: number;
-   
+  pageSize?: number;          // renamed from rowsPerPage
+  filterKey?: keyof T;        // optional, for search filter
 }
 
 function DataTable<T extends { symbol?: string }>({
@@ -24,7 +24,9 @@ function DataTable<T extends { symbol?: string }>({
   rowKey,
   onRowClick,
   emptyMessage = "No Data Found",
-  rowsPerPage = 10,
+  pageSize = 10,
+  filterKey="symbol",
+
 }: DataTableProps<T>) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
@@ -33,12 +35,11 @@ function DataTable<T extends { symbol?: string }>({
 
   // Filter
   const filtered = useMemo(() => {
-    if (!search) return data;
-    
-    return data.filter((row) =>
-      String(row.symbol ?? "").toLowerCase().includes(search.toLowerCase())
-    );
-  }, [data, search]);
+  if (!search) return data;
+  return data.filter((row) =>
+    String(row[filterKey] ?? "").toLowerCase().includes(search.toLowerCase())
+  );
+}, [data, search, filterKey]);
 
   // Sort
   const sorted = useMemo(() => {
@@ -59,11 +60,11 @@ function DataTable<T extends { symbol?: string }>({
   }, [filtered, sortKey, asc]);
 
   // Pagination
-  const totalPages = Math.ceil(sorted.length / rowsPerPage);
+  const totalPages = Math.ceil(sorted.length / pageSize);
   const paginated = useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    return sorted.slice(start, start + rowsPerPage);
-  }, [sorted, page, rowsPerPage]);
+    const start = (page - 1) * pageSize;
+    return sorted.slice(start, start + pageSize);
+  }, [sorted, page, pageSize]);
 
   if (data.length === 0) return <p>{emptyMessage}</p>;
 

@@ -27,6 +27,8 @@ const TradeFeature: React.FC<TradeFeatureProps> = ({
         rowKey="id"
   
         // pageSize={10}
+        pageSize={10}  // now matches DataTableProps
+        
         columns={[
           { key: 'symbol',   header: 'Symbol',  sortable: true },
           { key: 'type',     header: 'Type',
