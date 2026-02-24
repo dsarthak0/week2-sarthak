@@ -4,7 +4,11 @@ import type { Column } from './Datatable';
 import type { HoldingsDisplay } from '../types/stock.types';
 import { sampleHoldings, getProcessedHoldings } from '../data/sampleData';
 
+
 const HoldingsPage = () => {
+
+   
+
 
     const displayData: HoldingsDisplay[] = getProcessedHoldings(sampleHoldings);
 

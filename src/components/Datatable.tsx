@@ -14,6 +14,7 @@ interface DataTableProps<T extends { symbol?: string }> {
   rowKey: keyof T;
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
+  rowsPerPage?: number;
 }
 
 function DataTable<T extends { symbol?: string }>({
@@ -22,39 +23,22 @@ function DataTable<T extends { symbol?: string }>({
   rowKey,
   onRowClick,
   emptyMessage = "No Data Found",
+  rowsPerPage = 10,
 }: DataTableProps<T>) {
-  /* =========================
-        SEARCH STATE
-  ========================== */
   const [search, setSearch] = useState("");
-
-  /* =========================
-        SORT STATE
-  ========================== */
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
   const [asc, setAsc] = useState(true);
-
-  /* =========================
-        PAGINATION STATE
-  ========================== */
   const [page, setPage] = useState(1);
-  const pageSize = 10;
 
-  /* =========================
-        FILTER DATA
-  ========================== */
+  // Filter
   const filtered = useMemo(() => {
     if (!search) return data;
     return data.filter((row) =>
-      String(row.symbol ?? "")
-        .toLowerCase()
-        .includes(search.toLowerCase())
+      String(row.symbol ?? "").toLowerCase().includes(search.toLowerCase())
     );
   }, [data, search]);
 
-  /* =========================
-        SORT DATA
-  ========================== */
+  // Sort
   const sorted = useMemo(() => {
     if (!sortKey) return filtered;
 
@@ -72,21 +56,17 @@ function DataTable<T extends { symbol?: string }>({
     });
   }, [filtered, sortKey, asc]);
 
-  /* =========================
-        PAGINATED DATA
-  ========================== */
-  const totalPages = Math.ceil(sorted.length / pageSize);
-
+  // Pagination
+  const totalPages = Math.ceil(sorted.length / rowsPerPage);
   const paginated = useMemo(() => {
-    const start = (page - 1) * pageSize;
-    return sorted.slice(start, start + pageSize);
-  }, [sorted, page]);
+    const start = (page - 1) * rowsPerPage;
+    return sorted.slice(start, start + rowsPerPage);
+  }, [sorted, page, rowsPerPage]);
 
   if (data.length === 0) return <p>{emptyMessage}</p>;
 
   return (
     <div>
-    
       <div style={{ padding: 12 }}>
         <input
           placeholder="Search symbol..."
@@ -112,7 +92,6 @@ function DataTable<T extends { symbol?: string }>({
                 key={String(col.key)}
                 onClick={() => {
                   if (!col.sortable) return;
-
                   if (sortKey === col.key) setAsc(!asc);
                   else {
                     setSortKey(col.key);
@@ -126,7 +105,7 @@ function DataTable<T extends { symbol?: string }>({
                   borderBottom: "2px solid #c9cfd7",
                   cursor: col.sortable ? "pointer" : "default",
                   userSelect: "none",
-                  color:"#d3cbcb",
+                  color: "#d3cbcb",
                 }}
               >
                 {col.header}
@@ -143,7 +122,7 @@ function DataTable<T extends { symbol?: string }>({
               onClick={() => onRowClick?.(row)}
               style={{
                 background: ri % 2 === 0 ? "#090404" : "#030a11",
-                color:'#ffffff',
+                color: "#ffffff",
                 cursor: onRowClick ? "pointer" : "default",
               }}
             >
@@ -162,9 +141,6 @@ function DataTable<T extends { symbol?: string }>({
         </tbody>
       </table>
 
-      {/* =========================
-            PAGINATION
-      ========================== */}
       <div
         style={{
           display: "flex",
