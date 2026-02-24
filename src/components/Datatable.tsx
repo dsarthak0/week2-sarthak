@@ -8,22 +8,24 @@ export interface Column<T> {
   width?: number;
 }
 
-interface DataTableProps<T extends { symbol?: string }> {
+interface DataTableProps<T> {
   data: T[];
   columns: Column<T>[];
   rowKey: keyof T;
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
-  rowsPerPage?: number;
+  pageSize?: number;
+  filterKey?: keyof T; // optional, for search filter
 }
 
-function DataTable<T extends { symbol?: string }>({
+function DataTable<T>({
   data,
   columns,
   rowKey,
   onRowClick,
   emptyMessage = "No Data Found",
-  rowsPerPage = 10,
+  pageSize = 10,
+  filterKey, // optional
 }: DataTableProps<T>) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
@@ -33,10 +35,11 @@ function DataTable<T extends { symbol?: string }>({
   // Filter
   const filtered = useMemo(() => {
     if (!search) return data;
+    if (!filterKey) return data; // fallback if no filterKey
     return data.filter((row) =>
-      String(row.symbol ?? "").toLowerCase().includes(search.toLowerCase())
+      String(row[filterKey] ?? "").toLowerCase().includes(search.toLowerCase())
     );
-  }, [data, search]);
+  }, [data, search, filterKey]);
 
   // Sort
   const sorted = useMemo(() => {
@@ -57,11 +60,11 @@ function DataTable<T extends { symbol?: string }>({
   }, [filtered, sortKey, asc]);
 
   // Pagination
-  const totalPages = Math.ceil(sorted.length / rowsPerPage);
+  const totalPages = Math.ceil(sorted.length / pageSize);
   const paginated = useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    return sorted.slice(start, start + rowsPerPage);
-  }, [sorted, page, rowsPerPage]);
+    const start = (page - 1) * pageSize;
+    return sorted.slice(start, start + pageSize);
+  }, [sorted, page, pageSize]);
 
   if (data.length === 0) return <p>{emptyMessage}</p>;
 
@@ -69,7 +72,7 @@ function DataTable<T extends { symbol?: string }>({
     <div>
       <div style={{ padding: 12 }}>
         <input
-          placeholder="Search symbol..."
+          placeholder={`Search${filterKey ? ` ${String(filterKey)}` : ""}...`}
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
