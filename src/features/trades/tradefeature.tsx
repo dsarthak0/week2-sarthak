@@ -25,7 +25,7 @@ const TradeFeature: React.FC<TradeFeatureProps> = ({
       <DataTable<Trade>
         data={tradeHistory}
         rowKey="id"
-        filterKey="symbol"
+  
         // pageSize={10}
         columns={[
           { key: 'symbol',   header: 'Symbol',  sortable: true },

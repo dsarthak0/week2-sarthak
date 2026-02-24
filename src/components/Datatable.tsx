@@ -15,6 +15,7 @@ interface DataTableProps<T extends { symbol?: string }> {
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
   rowsPerPage?: number;
+   
 }
 
 function DataTable<T extends { symbol?: string }>({
@@ -33,6 +34,7 @@ function DataTable<T extends { symbol?: string }>({
   // Filter
   const filtered = useMemo(() => {
     if (!search) return data;
+    
     return data.filter((row) =>
       String(row.symbol ?? "").toLowerCase().includes(search.toLowerCase())
     );
