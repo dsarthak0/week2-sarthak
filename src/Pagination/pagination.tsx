@@ -54,7 +54,7 @@ export const Pagination = () => {
                 data={myStocks} 
                 columns={stockColumns as any} 
                 rowKey="symbol"
-                rowsPerPage={10} // This triggers your 10-per-page logic
+                pageSize={10} // This triggers your 10-per-page logic
             />
         </div>
     );
