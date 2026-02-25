@@ -11,7 +11,7 @@ import type { Stock, Trade } from './types/stock.types';
  
 // ── Boundary wrapper (EAGER import — NOT lazy) ───────────────────────
 import SuspenseBoundary from './boundaries/SuspenseBoundary';
-
+import StockComparePanel from './components/StockComaprePanel';
 import { 
   MockPositions, 
   sampleHoldings, 
@@ -23,6 +23,7 @@ import CardGridSkeleton from './skeletons/CardGridSkeleton';
 import FormSkeleton     from './skeletons/FormSkeleton';
 // import PortfolioPieChart from './features/piechart/portfoliopiechart';
 import PriceTicker from './features/horizontalticker';
+import { Pagination } from './Pagination/pagination';
 
 const prices = [
   { symbol: "BTC", price: "₹28,00,000", change: "▲2.3%" },
@@ -147,10 +148,12 @@ function App() {
           onSubmitTrade={handleNewTrade}
         />
         <PriceTicker prices={prices} speed={1}/>
+        <Pagination/>
       </SuspenseBoundary>
 
       {/* ── PIE CHART (ONLY ONCE, outside SuspenseBoundary) ── */}
       {/* <PortfolioPieChart holdings={sampleHoldings}/> */}
+      <StockComparePanel/>
     </div>
   );
 }
