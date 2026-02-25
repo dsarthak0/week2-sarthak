@@ -12,7 +12,7 @@ const HoldingsFeature: React.FC<HoldingsFeatureProps> = ({ holdings }) => {
 
   return (
     <div className="holdings-container">
-      <h2 style={{ color: '#1E40AF', marginBottom: '16px' }}>Your Holdings</h2>
+      <h2 style={{ color: '#1E40AF', marginBottom: '16px' }}>Share Split By Category</h2>
           <PortfolioPieChart holdings={holdings} />
       <DataTable<HoldingsDisplay>
         data={visibleItems} 
